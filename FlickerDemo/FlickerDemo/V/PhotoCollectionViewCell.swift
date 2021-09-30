@@ -11,5 +11,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet var image: UIImageView!
     @IBOutlet var text: UILabel!
+    @IBOutlet var button: UIButton!
     
 }

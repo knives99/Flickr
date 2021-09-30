@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Kingfisher
+import RealmSwift
 
 class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
@@ -19,11 +21,6 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        let layout = UICollectionViewFlowLayout()
-//        layout.minimumLineSpacing = 1
-//        layout.minimumInteritemSpacing = 1
-//        layout.itemSize = CGSize(width: view.frame.size.width/2, height: view.frame.size.height/2)
-//        collectionView = UICollectionView(frame: .zero,collectionViewLayout: layout)
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -64,10 +61,7 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
             flowLayout?.minimumLineSpacing = itemSpace
     }
 
-//
-//
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(photos.count)
         return photos.count
             }
     
@@ -75,32 +69,57 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
         
         let url = photos[indexPath.row].imageUrl
-        FlickerStore.shared.fetchImage(url: url) { (data) in
-            DispatchQueue.main.async {
-                let image = UIImage(data:data)
-                cell.image.image = image
-            }
-        }
+        cell.image.kf.setImage(with: url)
+//        FlickerStore.shared.fetchImage(url: url) { (data) in
+//            DispatchQueue.main.async {
+//                if let cell1 = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell{
+//                    let image = UIImage(data:data)
+//                    cell1.image.image = image
+//                }
+//
+//            }
+//        }
         cell.text.text = photos[indexPath.row].title
+        cell.button.tag = indexPath.row
+        cell.button.addTarget(self, action: #selector(whichButtonPressed(sender:)), for: .touchUpInside)
         return cell
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("scrollView.contentOffset.y: \(scrollView.contentOffset.y)")
-        print("scrollView.frame.size.height: \(scrollView.frame.size.height)")
-        print("scrollView.contentSize.height: \(scrollView.contentSize.height)")
+    @objc func whichButtonPressed(sender: UIButton) {
+        var buttonNumber = sender.tag
+        print(photos.count)
+        print(buttonNumber)
+        let photo = photos[buttonNumber]
+        let realm = FlickerStore.shared.realm
+        let favPhoto:RealmData = RealmData()
+        favPhoto.farm = photo.farm
+        favPhoto.id = photo.id
+        favPhoto.title = photo.title
+        favPhoto.server = photo.server
+        favPhoto.secret = photo.server
+        favPhoto.imageUrl =  photo.imageUrl.absoluteString
+        
+        
+        try! realm.write{
+            realm.add(favPhoto)
+        }
+//        print("fileURL: \(realm.configuration.fileURL!)")
+    }
 
-        // 當 scrollView 的 contentOffset 的 y 座標 + scrollView.frame 的高「大於等於」scrollView 的 contentView 的承載量時，表示快滾到最後一筆了，此時即可開始載入資料
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print("scrollView.contentOffset.y: \(scrollView.contentOffset.y)")
+//        print("scrollView.frame.size.height: \(scrollView.frame.size.height)")
+//        print("scrollView.contentSize.height: \(scrollView.contentSize.height)")
         if scrollView.contentOffset.y  >= (scrollView.contentSize.height - scrollView.frame.size.height * 1) {
             if var number = Int(FlickerStore.shared.page) {
-                           number = number + 10
-                           FlickerStore.shared.page = String(number)
-                           print(FlickerStore.shared.page)
+                           number = number + 1
+                           FlickerStore.shared.page = String(number) 
                        }
             let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5d79aba7f362c61e8becf3b54eb8af84&text=\(FlickerStore.shared.text)&per_page=\(FlickerStore.shared.page)&format=json&nojsoncallback=1"
             
             FlickerStore.shared.fetchData(url: url) { (data) in
                 self.photos = data.photos.photo
+                print(self.photos.count)
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                     self.refreshControl.endRefreshing()

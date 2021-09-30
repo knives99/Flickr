@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import RealmSwift
 
 class FlickerStore{
     
@@ -17,6 +18,7 @@ class FlickerStore{
     var text = ""
     var page = ""
     var photos : [Photo] = []
+    let realm = try! Realm()
 
 
     func fetchData(url:String,comp :@escaping(SearchData)->Void){
@@ -40,9 +42,7 @@ class FlickerStore{
             comp(data)
         }
     }
-    
     private init(){}
-
 }
 
 

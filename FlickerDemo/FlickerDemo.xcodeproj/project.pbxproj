@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6137744D2704C1C90098E2C6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6137744C2704C1C90098E2C6 /* Kingfisher */; };
+		61377453270580950098E2C6 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 61377452270580950098E2C6 /* Realm */; };
+		61377455270580950098E2C6 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 61377454270580950098E2C6 /* RealmSwift */; };
+		6137745A270581100098E2C6 /* RealmData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61377459270581100098E2C6 /* RealmData.swift */; };
+		6137746427058CC50098E2C6 /* FavoriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6137746327058CC50098E2C6 /* FavoriteCollectionViewCell.swift */; };
+		61377469270592950098E2C6 /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61377468270592950098E2C6 /* FavoriteViewController.swift */; };
 		61F446CD27032E73002603EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F446CC27032E73002603EF /* AppDelegate.swift */; };
 		61F446CF27032E73002603EF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F446CE27032E73002603EF /* SceneDelegate.swift */; };
 		61F446D127032E73002603EF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F446D027032E73002603EF /* ViewController.swift */; };
@@ -40,6 +46,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		61377459270581100098E2C6 /* RealmData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmData.swift; sourceTree = "<group>"; };
+		6137746327058CC50098E2C6 /* FavoriteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCollectionViewCell.swift; sourceTree = "<group>"; };
+		61377468270592950098E2C6 /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
 		61F446C927032E73002603EF /* FlickerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61F446CC27032E73002603EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		61F446CE27032E73002603EF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +74,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61377455270580950098E2C6 /* RealmSwift in Frameworks */,
+				61377453270580950098E2C6 /* Realm in Frameworks */,
+				6137744D2704C1C90098E2C6 /* Kingfisher in Frameworks */,
 				61F4470627033484002603EF /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +98,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6137743927049AC40098E2C6 /* C */ = {
+			isa = PBXGroup;
+			children = (
+				61F446D027032E73002603EF /* ViewController.swift */,
+				61F4471C270370CA002603EF /* PhotoViewController.swift */,
+				61377468270592950098E2C6 /* FavoriteViewController.swift */,
+			);
+			path = C;
+			sourceTree = "<group>";
+		};
+		6137744027049AEA0098E2C6 /* M */ = {
+			isa = PBXGroup;
+			children = (
+				61F446FF2703307F002603EF /* FlickerStore.swift */,
+				61F4470A27033D76002603EF /* Photo.swift */,
+				61377459270581100098E2C6 /* RealmData.swift */,
+			);
+			path = M;
+			sourceTree = "<group>";
+		};
+		6137744427049AFB0098E2C6 /* V */ = {
+			isa = PBXGroup;
+			children = (
+				61F446D227032E73002603EF /* Main.storyboard */,
+				61F4470F27036FBC002603EF /* PhotoCollectionViewCell.swift */,
+				6137746327058CC50098E2C6 /* FavoriteCollectionViewCell.swift */,
+			);
+			path = V;
+			sourceTree = "<group>";
+		};
 		61F446C027032E73002603EF = {
 			isa = PBXGroup;
 			children = (
@@ -111,15 +153,12 @@
 			children = (
 				61F446CC27032E73002603EF /* AppDelegate.swift */,
 				61F446CE27032E73002603EF /* SceneDelegate.swift */,
-				61F446D027032E73002603EF /* ViewController.swift */,
-				61F446FF2703307F002603EF /* FlickerStore.swift */,
-				61F4470A27033D76002603EF /* Photo.swift */,
-				61F446D227032E73002603EF /* Main.storyboard */,
-				61F4470F27036FBC002603EF /* PhotoCollectionViewCell.swift */,
+				6137743927049AC40098E2C6 /* C */,
+				6137744027049AEA0098E2C6 /* M */,
+				6137744427049AFB0098E2C6 /* V */,
 				61F446D527032E76002603EF /* Assets.xcassets */,
 				61F446D727032E76002603EF /* LaunchScreen.storyboard */,
 				61F446DA27032E76002603EF /* Info.plist */,
-				61F4471C270370CA002603EF /* PhotoViewController.swift */,
 			);
 			path = FlickerDemo;
 			sourceTree = "<group>";
@@ -160,6 +199,9 @@
 			name = FlickerDemo;
 			packageProductDependencies = (
 				61F4470527033484002603EF /* Alamofire */,
+				6137744C2704C1C90098E2C6 /* Kingfisher */,
+				61377452270580950098E2C6 /* Realm */,
+				61377454270580950098E2C6 /* RealmSwift */,
 			);
 			productName = FlickerDemo;
 			productReference = 61F446C927032E73002603EF /* FlickerDemo.app */;
@@ -234,6 +276,8 @@
 			mainGroup = 61F446C027032E73002603EF;
 			packageReferences = (
 				61F4470427033484002603EF /* XCRemoteSwiftPackageReference "Alamofire" */,
+				6137744B2704C1C90098E2C6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				61377451270580950098E2C6 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = 61F446CA27032E73002603EF /* Products */;
 			projectDirPath = "";
@@ -278,11 +322,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61377469270592950098E2C6 /* FavoriteViewController.swift in Sources */,
 				61F446D127032E73002603EF /* ViewController.swift in Sources */,
 				61F446CD27032E73002603EF /* AppDelegate.swift in Sources */,
 				61F447002703307F002603EF /* FlickerStore.swift in Sources */,
 				61F446CF27032E73002603EF /* SceneDelegate.swift in Sources */,
+				6137746427058CC50098E2C6 /* FavoriteCollectionViewCell.swift in Sources */,
 				61F4471D270370CA002603EF /* PhotoViewController.swift in Sources */,
+				6137745A270581100098E2C6 /* RealmData.swift in Sources */,
 				61F4470B27033D77002603EF /* Photo.swift in Sources */,
 				61F4471027036FBC002603EF /* PhotoCollectionViewCell.swift in Sources */,
 			);
@@ -613,6 +660,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6137744B2704C1C90098E2C6 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		61377451270580950098E2C6 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.16.0;
+			};
+		};
 		61F4470427033484002603EF /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -624,6 +687,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6137744C2704C1C90098E2C6 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6137744B2704C1C90098E2C6 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		61377452270580950098E2C6 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61377451270580950098E2C6 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		61377454270580950098E2C6 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61377451270580950098E2C6 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
 		61F4470527033484002603EF /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 61F4470427033484002603EF /* XCRemoteSwiftPackageReference "Alamofire" */;
