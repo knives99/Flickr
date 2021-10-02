@@ -10,38 +10,43 @@ import Alamofire
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
-    var searchText = "123"
-    var perPages = ""
+    var text = "123"
+    var page = ""
+    var photos = [Photo]()
     @IBOutlet var textField: UITextField!
     @IBOutlet var perPageField: UITextField!
     @IBOutlet var btn: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.textField.delegate = self
         self.perPageField.delegate = self
+        textField.addTarget(self, action: #selector(textFieldDidChange),
+                                  for: .editingChanged)
+        perPageField.addTarget(self, action: #selector(textFieldDidChange),
+                                  for: .editingChanged)
     }
     
+    @objc func textFieldDidChange() {
+        if textField.text!.isEmpty || perPageField.text!.isEmpty{
+                    btn.isEnabled = false
+                    btn.backgroundColor = .red
+        }else{
+            btn.isEnabled = true
+            btn.backgroundColor = .blue
+        }
+    }
 
     @IBAction func btnPressed(_ sender: Any) {
-        if textField.text!.isEmpty || perPageField.text!.isEmpty{
-            btn.isEnabled = false
-            btn.backgroundColor = .red
-            }else{
-            
-            btn.backgroundColor = .blue
-            guard  let text = textField.text else {return}
-            guard let page = perPageField.text else {return}
-            FlickerStore.shared.text = text
-            FlickerStore.shared.page = page
-            let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5d79aba7f362c61e8becf3b54eb8af84&text=\(FlickerStore.shared.text)&per_page=\(FlickerStore.shared.page)&format=json&nojsoncallback=1"
-
-            FlickerStore.shared.fetchData(url: url) { (SearchData) in
-                FlickerStore.shared.photos = SearchData.photos.photo
-                self.performSegue(withIdentifier: "go", sender: self)
-            }
+        guard  let text = textField.text else {return}
+        guard let page = perPageField.text else {return}
+        self.text = text
+        self.page = page
+        FlickerStore.shared.fetchData(text:self.text,page:self.page) { (SearchData) in
+            self.photos = SearchData.photos.photo
+            self.performSegue(withIdentifier: "go", sender: self)
         }
-       
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -55,6 +60,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         perPageField.resignFirstResponder()
         textField.resignFirstResponder()
      }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if  segue.identifier == "go" {
+            if let photoVC = segue.destination as? PhotoViewController {
+                photoVC.photos = photos
+                photoVC.text = text
+                photoVC.page = page
+            }
+        }
+    }
     
 
 

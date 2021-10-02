@@ -21,9 +21,11 @@ class FlickerStore{
     let realm = try! Realm()
 
 
-    func fetchData(url:String,comp :@escaping(SearchData)->Void){
+    func fetchData(text:String,page:String,comp :@escaping(SearchData)->Void){
+        let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5d79aba7f362c61e8becf3b54eb8af84&text=\(text)&per_page=\(page)&format=json&nojsoncallback=1"
         AF.request(url).responseJSON { (response) in
             guard let data = response.data else{
+
                 print(assertionFailure("data wrong"))
                 return}
             do {

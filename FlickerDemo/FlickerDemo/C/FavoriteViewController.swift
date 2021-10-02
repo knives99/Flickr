@@ -19,7 +19,6 @@ class FavoriteViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         configureCellSize()
@@ -51,7 +50,6 @@ class FavoriteViewController: UIViewController, UICollectionViewDelegateFlowLayo
         cell.image.kf.setImage(with: url)
         cell.text.text = photos[indexPath.row].title
         return cell
-        
     }
     
 

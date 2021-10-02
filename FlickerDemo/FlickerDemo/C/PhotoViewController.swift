@@ -14,14 +14,14 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
 
     @IBOutlet var collectionView: UICollectionView!
     
-    var photos = FlickerStore.shared.photos
+    var photos = [Photo]()
     let refreshControl = UIRefreshControl()
-
+    var text = "123"
+    var page = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
+        
         collectionView.dataSource = self
         collectionView.delegate = self
         configureCellSize()
@@ -33,13 +33,11 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
     }
     @objc func refresh(_ sender: AnyObject) {
         if var number = Int(FlickerStore.shared.page) {
-                       number = number + 2
+                       number = number + 1
                        FlickerStore.shared.page = String(number)
-                       print(FlickerStore.shared.page)
                    }
-        let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5d79aba7f362c61e8becf3b54eb8af84&text=\(FlickerStore.shared.text)&per_page=\(FlickerStore.shared.page)&format=json&nojsoncallback=1"
-        
-        FlickerStore.shared.fetchData(url: url) { (data) in
+//        let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5d79aba7f362c61e8becf3b54eb8af84&text=\(self.text)&per_page=\(self.page)&format=json&nojsoncallback=1"
+        FlickerStore.shared.fetchData(text:self.text,page:self.page) { (data) in
             self.photos = data.photos.photo
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -52,7 +50,6 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
     func configureCellSize() {
             let itemSpace: CGFloat = 5
             let columnCount: CGFloat = 2
-
         let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
             let width = floor((view.frame.size.width - itemSpace * (columnCount-1)) / columnCount)
             flowLayout?.itemSize = CGSize(width: width, height: width)
@@ -70,15 +67,6 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
         
         let url = photos[indexPath.row].imageUrl
         cell.image.kf.setImage(with: url)
-//        FlickerStore.shared.fetchImage(url: url) { (data) in
-//            DispatchQueue.main.async {
-//                if let cell1 = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell{
-//                    let image = UIImage(data:data)
-//                    cell1.image.image = image
-//                }
-//
-//            }
-//        }
         cell.text.text = photos[indexPath.row].title
         cell.button.tag = indexPath.row
         cell.button.addTarget(self, action: #selector(whichButtonPressed(sender:)), for: .touchUpInside)
@@ -87,8 +75,6 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
     
     @objc func whichButtonPressed(sender: UIButton) {
         var buttonNumber = sender.tag
-        print(photos.count)
-        print(buttonNumber)
         let photo = photos[buttonNumber]
         let realm = FlickerStore.shared.realm
         let favPhoto:RealmData = RealmData()
@@ -98,28 +84,19 @@ class PhotoViewController: UIViewController, UICollectionViewDataSource,UICollec
         favPhoto.server = photo.server
         favPhoto.secret = photo.server
         favPhoto.imageUrl =  photo.imageUrl.absoluteString
-        
-        
         try! realm.write{
             realm.add(favPhoto)
         }
-//        print("fileURL: \(realm.configuration.fileURL!)")
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        print("scrollView.contentOffset.y: \(scrollView.contentOffset.y)")
-//        print("scrollView.frame.size.height: \(scrollView.frame.size.height)")
-//        print("scrollView.contentSize.height: \(scrollView.contentSize.height)")
         if scrollView.contentOffset.y  >= (scrollView.contentSize.height - scrollView.frame.size.height * 1) {
-            if var number = Int(FlickerStore.shared.page) {
+            if var number = Int(self.page) {
                            number = number + 1
-                           FlickerStore.shared.page = String(number) 
+                self.page = String(number)
                        }
-            let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5d79aba7f362c61e8becf3b54eb8af84&text=\(FlickerStore.shared.text)&per_page=\(FlickerStore.shared.page)&format=json&nojsoncallback=1"
-            
-            FlickerStore.shared.fetchData(url: url) { (data) in
+            FlickerStore.shared.fetchData(text:self.text,page:self.page) { (data) in
                 self.photos = data.photos.photo
-                print(self.photos.count)
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                     self.refreshControl.endRefreshing()
